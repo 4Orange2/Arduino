@@ -1,6 +1,3 @@
-// C++ code
-//
-
 #include <LiquidCrystal.h>
 
 
