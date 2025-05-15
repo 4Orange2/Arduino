@@ -7,6 +7,9 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 const int trigPin = 8;
 const int echoPin = 13;
+int current_time;
+int init_time;
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -46,6 +49,8 @@ void loop() {
   lcd.print(distance_in_cm);
   lcd.setCursor(12 + String(distance_in_cm).length(), 0);
   lcd.print("cm");
+  Serial.end();
+  Serial.begin(9600);
   } 
   else if (choice == "motor") {
   Serial.println("Give Speed and then time of operation in seconds (separately): ");
@@ -57,17 +62,25 @@ void loop() {
   Serial.begin(9600);
   while (Serial.available() == false) {} 
   int time_of_oper = Serial.parseInt();
-  //Serial.println(speed);
+  Serial.println("Speed: ");
+  Serial.println(speed);
+  Serial.println("Time: ");
+  Serial.println(time_of_oper);  
   // Goes at desired speed for time specified
   if (speed >= 0 && speed <= 255) {
-    int init_time = millis();
+    Serial.println("entered");
+    init_time = millis();
     bool stopped = false;
     analogWrite(motorPin, speed);
     while (stopped == false) {
-    if ((millis() - init_time) >= (time_of_oper * 1000)) {
-      analogWrite(motorPin, 0);
-      stopped = true;
-      }
+      Serial.println(millis());
+      Serial.println(init_time);
+      current_time = millis();
+      if ((current_time - init_time) >= (time_of_oper * 1000)) {
+        Serial.println("AHHAAAAAAAAH");
+        analogWrite(motorPin, 0);
+        stopped = true;
+        }
     }
   }
   Serial.end();
