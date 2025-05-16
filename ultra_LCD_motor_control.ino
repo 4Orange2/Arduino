@@ -16,6 +16,7 @@ void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   Serial.begin(9600);
+  lcd.begin(16,2);
 }
 
 void loop() {
